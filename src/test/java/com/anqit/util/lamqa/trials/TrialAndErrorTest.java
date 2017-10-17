@@ -3,13 +3,9 @@ package com.anqit.util.lamqa.trials;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.anqit.util.lamqa.function.ThrowingBiFunction;
-
-//import org.junit.jupiter.api.Test;
-
 import com.anqit.util.lamqa.trials.TrialAndError.BiFunctionalTrialAndError;
 
 public class TrialAndErrorTest {
@@ -20,24 +16,30 @@ public class TrialAndErrorTest {
 
 	BiFunctionalTrialAndError<Integer, Integer, Number> divisionTrier;
 
-	@Before
-	public void setup() {
-		divisionTrier = TrialAndError.firstTry(toDivideTheArgs);
-	}
-
 	@Test
 	public void testDivisionWithoutDefault() {
 		// returns null when divide by 0
+		divisionTrier = TrialAndError.firstTry(toDivideTheArgs);
+
 		runTheDivisionTests();
 	}
 
 	@Test
 	public void testWithDefault() {
-		divisionTrier.ifAllElseFails(justReturnZero);
+		divisionTrier = TrialAndError.firstTry(toDivideTheArgs).ifAllElseFails(justReturnZero);
 
 		runTheDivisionTests();
 	}
-	
+
+	@Test
+	public void testWithDefaultAndExceptionHandler() {
+		divisionTrier = TrialAndError.firstTry(toDivideTheArgs, (e, t, u) -> {
+			System.out.println(String.format("Caught exception %s while trying to divide %s by %s", e, t, u));
+		}).ifAllElseFails(justReturnZero);
+
+		runTheDivisionTests();
+	}
+
 	private void runTheDivisionTests() {
 		Arrays.asList(divisionTests).stream().forEach(pair -> {
 			int t = pair[0], u = pair[1];

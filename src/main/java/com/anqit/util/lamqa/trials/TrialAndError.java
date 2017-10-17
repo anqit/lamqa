@@ -17,7 +17,7 @@ import com.anqit.util.lamqa.trials.exception.TrialFailedException;
 
 /**
  * A framework to support a trial-and-error strategy for obtaining a value. Instances of {@link TrialAndError} 
- * set up an ordered chain of methods to call. Each method is attempted in turn to obtain a value of type <code>R</code>.
+ * set up an ordered chain of methods to call. Each method is attempted in turn to obtain a value of type {@code R}.
  * If the calling method throws any type of {@link Exception}, the {@link Exception} is processed by any associated 
  * {@link ExceptionHandler}, and the next method is attempted. Evaluating the functions in the chain continues until a
  * value is returned.
@@ -181,7 +181,7 @@ public abstract class TrialAndError<TE extends TrialAndError<TE, F, E, R>, F ext
 	 * {@link Exception}
 	 * 
 	 * @param defaultSupplier
-	 * 		a {@link Supplier} of type <code>R</code>
+	 * 		a {@link Supplier} of type {@code R}
 	 * 
 	 * @return
 	 * 		this {@link TrialAndError} instance	
