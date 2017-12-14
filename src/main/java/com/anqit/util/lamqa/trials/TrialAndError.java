@@ -17,9 +17,9 @@ import com.anqit.util.lamqa.trials.exception.TrialFailedException;
 
 /**
  * A framework to support a trial-and-error strategy for obtaining a value. Instances of {@link TrialAndError} 
- * set up an ordered chain of methods to call. Each method is attempted in turn to obtain a value of type {@code R}.
- * If the calling method throws any type of {@link Exception}, the {@link Exception} is processed by any associated 
- * {@link ExceptionHandler}, and the next method is attempted. Evaluating the functions in the chain continues until a
+ * set up an ordered chain of functions to call. Each function is attempted in turn to obtain a value of type {@code R}.
+ * If the calling function throws any type of {@link Exception}, the {@link Exception} is processed by any associated 
+ * {@link ExceptionHandler}, and the next function is attempted. Evaluating the functions in the chain continues until a
  * value is returned.
  * 
  * If all of the functions in the function chain throw, then the default value is returned if specified by either
@@ -75,7 +75,7 @@ public abstract class TrialAndError<TE extends TrialAndError<TE, F, E, R>, F ext
 
 	/**
 	 * Creates a {@link FunctionalTrialAndError} instance by specifying the first single-arg function to try.
-	 * By not specifying an {@link ExceptionHandler}, any {@link Exception} thrown by this function will not be processed.
+	 * By not specifying an {@link ExceptionHandler}, any {@link Exception} thrown by this function will be ignored.
 	 * 
 	 * @param firstAttempt
 	 * 		the first function to try
@@ -105,7 +105,7 @@ public abstract class TrialAndError<TE extends TrialAndError<TE, F, E, R>, F ext
 
 	/**
 	 * Creates a {@link BiFunctionalTrialAndError} instance by specifying the first single-arg function to try.
-	 * By not specifying an {@link ExceptionHandler}, any {@link Exception} thrown by this function will not be processed.
+	 * By not specifying an {@link ExceptionHandler}, any {@link Exception} thrown by this function will be ignored..
 	 * 
 	 * @param firstAttempt
 	 * 		the first function to try
@@ -135,7 +135,7 @@ public abstract class TrialAndError<TE extends TrialAndError<TE, F, E, R>, F ext
 
 	/**
 	 * Add a function to this {@link TrialAndError}'s function chain. By not specifying an {@link ExceptionHandler}, 
-	 * any {@link Exception} thrown by this function will not be processed.
+	 * any {@link Exception} thrown by this function will be ignored.
 	 * 
 	 * @param anotherAttempt
 	 * 		the function to add to the function chain
@@ -214,7 +214,6 @@ public abstract class TrialAndError<TE extends TrialAndError<TE, F, E, R>, F ext
 				return toTrial.apply(trials.get(i)).getThrows();
 			} catch (Exception e) {
 				toHandler.apply(handlers.get(i)).handle(e);
-				continue;
 			}
 		}
 		
